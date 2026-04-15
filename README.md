@@ -150,6 +150,35 @@ Frontend runs on Vite dev server (usually `http://localhost:5173`).
 - `npm run build` - type-check and build production assets
 - `npm run preview` - preview production build
 
+## CI/CD
+
+GitHub Actions workflows are included in `.github/workflows`:
+
+- `ci.yml`
+  - Runs on push to `main` and on pull requests
+  - Builds backend (`npm ci`, `npm run build`)
+  - Builds frontend (`npm ci`, `npm run build`)
+
+- `cd.yml`
+  - Runs on push to `main` (and manually via workflow dispatch)
+  - Deploys frontend to GitHub Pages
+  - Builds and publishes backend Docker image to GHCR:
+    - `ghcr.io/<owner>/<repo>/task-management-backend:latest`
+    - `ghcr.io/<owner>/<repo>/task-management-backend:sha-<commit>`
+
+### One-time GitHub setup
+
+1. In repository settings, enable **GitHub Pages** with source set to **GitHub Actions**.
+2. Ensure Actions have read/write permissions for contents, pages, and packages (workflow already requests these permissions).
+3. If your org restricts package publishing, allow GHCR publishing for this repository.
+
+### Backend container
+
+Backend Docker files:
+
+- `backend/Dockerfile`
+- `backend/.dockerignore`
+
 ## API Endpoints
 
 ### Auth
